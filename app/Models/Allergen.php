@@ -14,5 +14,5 @@ class Allergen extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'url'];
+    protected $fillable = ['name', 'pictures'];
 }

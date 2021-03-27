@@ -22,6 +22,10 @@ class CreateDishesTable extends Migration
             $table->boolean('hidden');
             $table->boolean('menu');
             $table->float('price_menu')->nullable();
+            $table->text('ingredients')->nullable();
+            $table->bigInteger('id_section');
+            $table->set('id_allergen', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+
             $table->timestamps();
         });
     }
