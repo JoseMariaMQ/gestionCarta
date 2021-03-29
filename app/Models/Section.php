@@ -15,4 +15,13 @@ class Section extends Model
      * @var string[]
      */
     protected $fillable = ['name', 'picture', 'hidden'];
+
+    /**
+     * Get the dishes for the section
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dishes() {
+        return $this->hasMany(Dish::class);
+    }
 }
