@@ -15,4 +15,13 @@ class Allergen extends Model
      * @var string[]
      */
     protected $fillable = ['name', 'pictures'];
+
+    /**
+     * The dishes that belongs to the allergen
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function dishes() {
+        return $this->belongsToMany(Dish::class);
+    }
 }

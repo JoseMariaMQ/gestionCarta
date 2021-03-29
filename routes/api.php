@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MeController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'signUp']);
@@ -30,4 +28,17 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user', [AuthController::class, 'user']);
     });
 
+    Route::group(['prefix' => 'me'], function () {
+        Route::get('/', [MeController::class, 'show']);
+        Route::put('/', [MeController::class, 'edit']);
+        Route::put('/security', [MeController::class, 'editSecurity']);
+    });
+
+    Route::group(['prefix' => 'section'], function () {
+        Route::get('/', [SectionController::class, 'index']);
+        Route::post('/', [SectionController::class, 'store']);
+        Route::get('/{id}', [SectionController::class, 'show']);
+        Route::put('/{id}', [SectionController::class, 'update']);
+        Route::delete('/{id}', [SectionController::class, 'delete']);
+    });
 });

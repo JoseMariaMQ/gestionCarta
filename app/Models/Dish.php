@@ -15,4 +15,22 @@ class Dish extends Model
      * @var string[]
      */
     protected $fillable = ['name', 'price', 'units', 'extra', 'hidden', 'menu', 'price_menu'];
+
+    /**
+     * Get the section that owns the dish
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sections() {
+        return $this->belongsTo(Dish::class);
+    }
+
+    /**
+     * The allergens that belongs to the dish
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function allergens() {
+        return $this->belongsToMany(Allergen::class);
+    }
 }

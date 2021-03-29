@@ -23,8 +23,7 @@ class CreateDishesTable extends Migration
             $table->boolean('menu');
             $table->float('price_menu')->nullable();
             $table->text('ingredients')->nullable();
-            $table->foreignId('id_section')->constrained();
-            $table->foreignId('id_allergen')->constrained();
+            $table->foreignId('section_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });
