@@ -94,6 +94,7 @@ class DishController extends Controller
         try {
             // Retrieve single records using the find method
             $dish = Dish::find($request->id);
+//            $dish = Dish::where('section_id', $request->id)->get();
 
             if ($dish) {
                 return response()->json([
@@ -102,6 +103,33 @@ class DishController extends Controller
             } else {
                 return response()->json([
                     'message' => 'There is no dish with that ID'
+                ]);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Get a dishes from a section
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showDishesSection(Request $request) {
+        try {
+            // Retrieve records using the where method
+            $dishes = Dish::where('section_id', $request->id)->get();
+
+            if ($dishes->count() > 0) {
+                return response()->json([
+                    $dishes
+                ]);
+            } else {
+                return response()->json([
+                    'message' => "There aren't dishes in that section"
                 ]);
             }
         } catch (Exception $e) {

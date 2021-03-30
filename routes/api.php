@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/', [DishController::class, 'index']);
         Route::post('/', [DishController::class, 'store']);
         Route::get('/{id}', [DishController::class, 'show']);
+        Route::get('/{id}', [DishController::class, 'showDishesSection']);
         Route::put('/{id}', [DishController::class, 'update']);
         Route::delete('/{id}', [DishController::class, 'delete']);
     });
