@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DishController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Http\Request;
@@ -40,5 +41,13 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/{id}', [SectionController::class, 'show']);
         Route::put('/{id}', [SectionController::class, 'update']);
         Route::delete('/{id}', [SectionController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => 'dishes'], function () {
+        Route::get('/', [DishController::class, 'index']);
+        Route::post('/', [DishController::class, 'store']);
+        Route::get('/{id}', [DishController::class, 'show']);
+        Route::put('/{id}', [DishController::class, 'update']);
+        Route::delete('/{id}', [DishController::class, 'delete']);
     });
 });

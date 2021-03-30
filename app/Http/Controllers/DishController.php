@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Section;
+use App\Models\Dish;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class SectionController extends Controller
+class DishController extends Controller
 {
     /**
-     * List all sections
+     * List all dishes
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -20,15 +20,15 @@ class SectionController extends Controller
     public function index(Request $request) {
         try {
             //The model's all method will retrieve all of the records from the model's associated database table
-            $sections = Section::all();
+            $dishes = Dish::all();
 
-            if ($sections->count() > 0) {
+            if ($dishes->count() > 0) {
                 return response()->json([
-                    $sections
+                    $dishes
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'No sections'
+                    'message' => 'No dishes'
                 ]);
             }
 
@@ -41,7 +41,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Store new section
+     * Store new dish
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -49,16 +49,28 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         try {
-            Validator::make($request->all(), [
+            $validate = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'picture' => 'required|string|max:255',
-                'hidden' => 'boolean'
+                'price' => 'required|numeric|max:999999.99',
+                'units' => 'integer',
+                'extra' => 'boolean',
+                'hidden' => 'boolean',
+                'menu' => 'boolean',
+                'price_menu' => 'numeric|max:999999.99',
+                'ingredients' => 'string',
+                'section_id' => 'required|integer|exists:App\Models\Section,id'
             ]);
 
-            Section::create($request->all());
+            if ($validate->fails()) {
+                return response()->json([
+                   'error' => $validate->errors()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            Dish::create($request->all());
 
             return response()->json([
-                'message' => 'Successfully created section!'
+                'message' => 'Successfully created dish!'
             ], Response::HTTP_CREATED);
         } catch (ValidationException $e) {
             return response()->json([
@@ -73,7 +85,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Get a section
+     * Get a dish
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -81,15 +93,15 @@ class SectionController extends Controller
     public function show(Request $request) {
         try {
             // Retrieve single records using the find method
-            $section = Section::find($request->id);
+            $dish = Dish::find($request->id);
 
-            if ($section) {
+            if ($dish) {
                 return response()->json([
-                    $section
+                    $dish
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'There is no section with that ID'
+                    'message' => 'There is no dish with that ID'
                 ]);
             }
         } catch (Exception $e) {
@@ -100,23 +112,23 @@ class SectionController extends Controller
     }
 
     /**
-     * Update all section's fields
+     * Update all dish's fields
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request) {
         try {
-            $section = Section::find($request->id);
+            $dish = Dish::find($request->id);
 
-            if ($section) {
-                $section->update($request->all());
+            if ($dish) {
+                $dish->update($request->all());
                 return response()->json([
-                    'message' => 'Successfully updated section!'
+                    'message' => 'Successfully updated dish!'
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'message' => 'There is no section with that ID'
+                    'message' => 'There is no dish with that ID'
                 ], Response::HTTP_BAD_REQUEST);
             }
         } catch (Exception $e) {
@@ -128,23 +140,23 @@ class SectionController extends Controller
     }
 
     /**
-     * Delete a section
+     * Delete a dish
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request) {
         try {
-            $section = Section::find($request->id);
+            $dish = Dish::find($request->id);
 
-            if ($section) {
-                $section->delete($request->all());
+            if ($dish) {
+                $dish->delete($request->all());
                 return response()->json([
-                    'message' => 'Successfully deleted section!'
+                    'message' => 'Successfully deleted dish!'
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'message' => 'There is no section with that ID'
+                    'message' => 'There is no dish with that ID'
                 ], Response::HTTP_BAD_REQUEST);
             }
         } catch (Exception $e) {

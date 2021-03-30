@@ -17,7 +17,7 @@ class CreateSectionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('picture');
-            $table->boolean('hidden');
+            $table->boolean('hidden')->default(false);
             $table->timestamps();
         });
     }

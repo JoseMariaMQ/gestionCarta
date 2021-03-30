@@ -18,9 +18,9 @@ class CreateDishesTable extends Migration
             $table->string('name');
             $table->float('price');
             $table->integer('units')->nullable();
-            $table->boolean('extra');
-            $table->boolean('hidden');
-            $table->boolean('menu');
+            $table->boolean('extra')->default(0);
+            $table->boolean('hidden')->default(0);
+            $table->boolean('menu')->default(0);
             $table->float('price_menu')->nullable();
             $table->text('ingredients')->nullable();
             $table->foreignId('section_id')->constrained()->onDelete('cascade');
