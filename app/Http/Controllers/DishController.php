@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AllergenDish;
 use App\Models\Dish;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -58,7 +60,9 @@ class DishController extends Controller
                 'menu' => 'boolean',
                 'price_menu' => 'numeric|max:999999.99',
                 'ingredients' => 'string',
-                'section_id' => 'required|integer|exists:App\Models\Section,id'
+                'picture' => 'image|mimes:jpg,jpeg,png|max:1024',
+                'section_id' => 'required|integer|exists:App\Models\Section,id',
+                'allergens_id' => 'exists:App\Models\Allergen,id'
             ]);
 
             if ($validate->fails()) {
@@ -67,7 +71,32 @@ class DishController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            Dish::create($request->all());
+            $file = $request->file('picture');
+            $path = Storage::putFile('pictures/dishes'. $request->id, $file);
+            $url = Storage::url($path);
+            $url = url($url);
+
+            $dish = Dish::create([
+                'name' => $request->name,
+                'price' => $request->price,
+                'units' => $request->units,
+                'extra' => $request->extra,
+                'hidden' => $request->hidden,
+                'menu' => $request->menu,
+                'price_menu' => $request->price_menu,
+                'ingredients' => $request->ingredients,
+                'picture' => $url,
+                'section_id' => $request->section_id
+            ]);
+
+            foreach ($request->allergens_id as $allergen_id) {
+                echo $allergen_id;
+
+                AllergenDish::create([
+                    'allergen_id' => $allergen_id,
+                    'dish_id' => $dish->id
+                ]);
+            }
 
             return response()->json([
                 'message' => 'Successfully created dish!'

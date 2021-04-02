@@ -6,6 +6,7 @@ use App\Models\Section;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -49,13 +50,28 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         try {
-            Validator::make($request->all(), [
+            $validate = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'picture' => 'required|string|max:255',
+                'picture' => 'required|image|mimes:jpg,jpeg,png|max:1024',
                 'hidden' => 'boolean'
             ]);
 
-            Section::create($request->all());
+            if ($validate->fails()) {
+                return response()->json([
+                    'error' => $validate->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $file = $request->file('picture');
+            $path = Storage::putFile('pictures/sections'. $request->id, $file);
+            $url = Storage::url($path);
+            $url = url($url);
+
+            Section::create([
+                'name' => $request->name,
+                'picture' => $url,
+                'hidden' => $request->hidden
+            ]);
 
             return response()->json([
                 'message' => 'Successfully created section!'

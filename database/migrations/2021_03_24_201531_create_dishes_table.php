@@ -15,7 +15,7 @@ class CreateDishesTable extends Migration
     {
         Schema::create('dishes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name', 255);
             $table->float('price');
             $table->integer('units')->nullable();
             $table->boolean('extra')->default(0);
@@ -23,6 +23,7 @@ class CreateDishesTable extends Migration
             $table->boolean('menu')->default(0);
             $table->float('price_menu')->nullable();
             $table->text('ingredients')->nullable();
+            $table->string('picture', 255)->nullable();
             $table->foreignId('section_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();

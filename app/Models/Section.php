@@ -14,7 +14,7 @@ class Section extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'picture', 'hidden'];
+    protected $fillable = ['name', 'picture', 'order', 'hidden'];
 
     /**
      * Get the dishes for the section

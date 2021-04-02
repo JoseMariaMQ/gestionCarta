@@ -14,7 +14,7 @@ class Dish extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'price', 'units', 'extra', 'hidden', 'menu', 'price_menu', 'ingredients', 'section_id'];
+    protected $fillable = ['name', 'price', 'units', 'extra', 'hidden', 'menu', 'price_menu', 'ingredients', 'picture', 'section_id'];
 
     /**
      * Get the section that owns the dish
