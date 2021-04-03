@@ -90,8 +90,6 @@ class DishController extends Controller
             ]);
 
             foreach ($request->allergens_id as $allergen_id) {
-                echo $allergen_id;
-
                 AllergenDish::create([
                     'allergen_id' => $allergen_id,
                     'dish_id' => $dish->id
@@ -207,6 +205,8 @@ class DishController extends Controller
             $dish = Dish::find($request->id);
 
             if ($dish) {
+                // Delete the local image. Modify the url
+                Storage::delete(str_replace(url(Storage::url('')), '', $dish->picture));
                 $dish->delete($request->all());
                 return response()->json([
                     'message' => 'Successfully deleted dish!'

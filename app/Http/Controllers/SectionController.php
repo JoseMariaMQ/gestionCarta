@@ -154,6 +154,8 @@ class SectionController extends Controller
             $section = Section::find($request->id);
 
             if ($section) {
+                // Delete the local image. Modify the url
+                Storage::delete(str_replace(url(Storage::url('')), '', $section->picture));
                 $section->delete($request->all());
                 return response()->json([
                     'message' => 'Successfully deleted section!'

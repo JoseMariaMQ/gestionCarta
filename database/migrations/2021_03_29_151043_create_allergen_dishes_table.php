@@ -15,8 +15,8 @@ class CreateAllergenDishesTable extends Migration
     {
         Schema::create('allergen_dish', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('allergen_id')->constrained();
-            $table->foreignId('dish_id')->constrained();
+            $table->foreignId('allergen_id')->constrained()->onDelete('cascade');
+            $table->foreignId('dish_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
