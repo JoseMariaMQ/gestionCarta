@@ -22,7 +22,7 @@ class Dish extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function sections() {
-        return $this->belongsTo(Dish::class);
+        return $this->belongsTo(Section::class);
     }
 
     /**

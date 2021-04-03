@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DishController;
+use App\Http\Controllers\DrinkController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Http\Request;
@@ -47,8 +48,17 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/', [DishController::class, 'index']);
         Route::post('/', [DishController::class, 'store']);
         Route::get('/{id}', [DishController::class, 'show']);
-        Route::get('/{id}', [DishController::class, 'showDishesSection']);
+        Route::get('/section/{section_id}', [DishController::class, 'showDishesSection']);
         Route::put('/{id}', [DishController::class, 'update']);
         Route::delete('/{id}', [DishController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => 'drinks'], function () {
+        Route::get('/', [DrinkController::class, 'index']);
+        Route::post('/', [DrinkController::class, 'store']);
+        Route::get('/{id}', [DrinkController::class, 'show']);
+        Route::get('/section/{section_id}', [DrinkController::class, 'showDrinksSection']);
+        Route::put('/{id}', [DrinkController::class, 'update']);
+        Route::delete('/{id}', [DrinkController::class, 'delete']);
     });
 });

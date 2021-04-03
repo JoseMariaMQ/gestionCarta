@@ -63,14 +63,14 @@ class SectionController extends Controller
             }
 
             $file = $request->file('picture');
-            $path = Storage::putFile('pictures/sections'. $request->id, $file);
+            $path = Storage::putFile('pictures/sections', $file);
             $url = Storage::url($path);
             $url = url($url);
 
             Section::create([
                 'name' => $request->name,
                 'picture' => $url,
-                'hidden' => $request->hidden
+                'hidden' => $request->hidden ? $request->hidden : false // Check if user enters hidden parameter
             ]);
 
             return response()->json([

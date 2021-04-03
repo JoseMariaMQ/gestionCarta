@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AllergenDish;
-use App\Models\Dish;
+use App\Models\Drink;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -11,10 +10,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class DishController extends Controller
+class DrinkController extends Controller
 {
+
     /**
-     * List all dishes
+     * List all drinks
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -22,15 +22,15 @@ class DishController extends Controller
     public function index(Request $request) {
         try {
             //The model's all method will retrieve all of the records from the model's associated database table
-            $dishes = Dish::all();
+            $drinks = Drink::all();
 
-            if ($dishes->count() > 0) {
+            if ($drinks->count() > 0) {
                 return response()->json([
-                    $dishes
+                    $drinks
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'No dishes'
+                    'message' => 'No drinks'
                 ]);
             }
         } catch (Exception $e) {
@@ -41,61 +41,42 @@ class DishController extends Controller
     }
 
     /**
-     * Store new dish
+     * Store new drink
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         try {
             $validate = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'price' => 'required|numeric|max:999999.99',
-                'units' => 'integer',
-                'extra' => 'boolean',
                 'hidden' => 'boolean',
-                'menu' => 'boolean',
-                'price_menu' => 'numeric|max:999999.99',
-                'ingredients' => 'string',
                 'picture' => 'image|mimes:jpg,jpeg,png|max:1024',
-                'section_id' => 'required|integer|exists:App\Models\Section,id',
-                'allergens_id' => 'exists:App\Models\Allergen,id'
+                'section_id' => 'required|integer|exists:App\Models\Section,id'
             ]);
 
             if ($validate->fails()) {
                 return response()->json([
-                   'error' => $validate->errors()
+                    'error' => $validate->errors()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $file = $request->file('picture');
-            $path = Storage::putFile('pictures/dishes'. $request->id, $file);
+            $path = Storage::putFile('pictures/drinks', $file);
             $url = Storage::url($path);
             $url = url($url);
 
-            $dish = Dish::create([
+            Drink::create([
                 'name' => $request->name,
                 'price' => $request->price,
-                'units' => $request->units,
-                'extra' => $request->extra,
                 'hidden' => $request->hidden ? $request->hidden : false, // Check if user enters hidden parameter
-                'menu' => $request->menu,
-                'price_menu' => $request->price_menu,
-                'ingredients' => $request->ingredients,
                 'picture' => $url,
                 'section_id' => $request->section_id
             ]);
 
-            foreach ($request->allergens_id as $allergen_id) {
-                AllergenDish::create([
-                    'allergen_id' => $allergen_id,
-                    'dish_id' => $dish->id
-                ]);
-            }
-
             return response()->json([
-                'message' => 'Successfully created dish!'
+                'message' => 'Successfully created drink!'
             ], Response::HTTP_CREATED);
         } catch (ValidationException $e) {
             return response()->json([
@@ -109,7 +90,7 @@ class DishController extends Controller
     }
 
     /**
-     * Get a dish
+     * Get a drink
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -117,16 +98,15 @@ class DishController extends Controller
     public function show(Request $request) {
         try {
             // Retrieve single records using the find method
-            $dish = Dish::find($request->id);
-//            $dish = Dish::where('section_id', $request->id)->get();
+            $drink = Drink::find($request->id);
 
-            if ($dish) {
+            if ($drink) {
                 return response()->json([
-                    $dish
+                    $drink
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'There is no dish with that ID'
+                    'message' => 'There is no drink with that ID'
                 ]);
             }
         } catch (Exception $e) {
@@ -137,23 +117,23 @@ class DishController extends Controller
     }
 
     /**
-     * Get a dishes from a section
+     * Get a drinks from a section
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showDishesSection(Request $request) {
+    public function showDrinksSection(Request $request) {
         try {
             // Retrieve records using the where method
-            $dishes = Dish::where('section_id', $request->section_id)->get();
+            $drinks = Drink::where('section_id', $request->section_id)->get();
 
-            if ($dishes->count() > 0) {
+            if ($drinks->count() > 0) {
                 return response()->json([
-                    $dishes
+                    $drinks
                 ]);
             } else {
                 return response()->json([
-                    'message' => "There aren't dishes in that section"
+                    'message' => "There aren't drinks in that section"
                 ]);
             }
         } catch (Exception $e) {
@@ -164,7 +144,7 @@ class DishController extends Controller
     }
 
     /**
-     * Update all dish's fields
+     * Update all drink's fields
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -174,14 +154,8 @@ class DishController extends Controller
             $validate = Validator::make($request->all(), [
                 'name' => 'string|max:255',
                 'price' => 'numeric|max:999999.99',
-                'units' => 'integer',
-                'extra' => 'boolean',
                 'hidden' => 'boolean',
-                'menu' => 'boolean',
-                'price_menu' => 'numeric|max:999999.99',
-                'ingredients' => 'string',
-                'section_id' => 'integer|exists:App\Models\Section,id',
-                'allergens_id' => 'exists:App\Models\Allergen,id'
+                'section_id' => 'integer|exists:App\Models\Section,id'
             ]);
 
             if ($validate->fails()) {
@@ -190,24 +164,17 @@ class DishController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            $dish = Dish::find($request->id);
+            $drink = Drink::find($request->id);
 
-            if ($dish) {
-                $dish->update($request->all());
-
-                foreach ($request->allergens_id as $allergen_id) {
-                    AllergenDish::create([
-                        'allergen_id' => $allergen_id,
-                        'dish_id' => $dish->id
-                    ]);
-                }
+            if ($drink) {
+                $drink->update($request->all());
 
                 return response()->json([
-                    'message' => 'Successfully updated dish!'
+                    'message' => 'Successfully updated drink!'
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'message' => 'There is no dish with that ID'
+                    'message' => 'There is no drink with that ID'
                 ], Response::HTTP_BAD_REQUEST);
             }
         } catch (Exception $e) {
@@ -218,25 +185,25 @@ class DishController extends Controller
     }
 
     /**
-     * Delete a dish
+     * Delete a drink
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request) {
         try {
-            $dish = Dish::find($request->id);
+            $drink = Drink::find($request->id);
 
-            if ($dish) {
+            if ($drink) {
                 // Delete the local image. Modify the url
-                Storage::delete(str_replace(url(Storage::url('')), '', $dish->picture));
-                $dish->delete($request->all());
+                Storage::delete(str_replace(url(Storage::url('')), '', $drink->picture));
+                $drink->delete($request->all());
                 return response()->json([
-                    'message' => 'Successfully deleted dish!'
+                    'message' => 'Successfully deleted drink!'
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'message' => 'There is no dish with that ID'
+                    'message' => 'There is no drink with that ID'
                 ], Response::HTTP_BAD_REQUEST);
             }
         } catch (Exception $e) {

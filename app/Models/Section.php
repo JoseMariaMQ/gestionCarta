@@ -24,4 +24,13 @@ class Section extends Model
     public function dishes() {
         return $this->hasMany(Dish::class);
     }
+
+    /**
+     * Get the drinks for the section
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function drinks() {
+        return $this->hasMany(Drink::class);
+    }
 }
