@@ -14,7 +14,7 @@ class Drink extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'price', 'hidden', 'picture', 'section_id'];
+    protected $fillable = ['name', 'price', 'hidden', 'section_id', 'picture_id'];
 
     /**
      * Get the section that owns the drink
@@ -23,5 +23,14 @@ class Drink extends Model
      */
     public function sections() {
         return $this->belongsTo(Section::class);
+    }
+
+    /**
+     * Get the picture associated with the drink
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function picture() {
+        return $this->hasOne(Picture::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Picture;
 use App\Models\Section;
 use Exception;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ class SectionController extends Controller
             $validate = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'picture' => 'required|image|mimes:jpg,jpeg,png|max:1024',
+                'order' => 'integer',
                 'hidden' => 'boolean'
             ]);
 
@@ -67,10 +69,15 @@ class SectionController extends Controller
             $url = Storage::url($path);
             $url = url($url);
 
+            $picture = Picture::create([
+                'url' => $url
+            ]);
+
             Section::create([
                 'name' => $request->name,
-                'picture' => $url,
-                'hidden' => $request->hidden ? $request->hidden : false // Check if user enters hidden parameter
+                'order' => $request->order ? $request->order : null,
+                'hidden' => $request->hidden ? $request->hidden : false, // Check if user enters hidden parameter
+                'picture_id' => $picture->id
             ]);
 
             return response()->json([
@@ -152,11 +159,14 @@ class SectionController extends Controller
     public function delete(Request $request) {
         try {
             $section = Section::find($request->id);
+            $picture = Picture::find($section->picture_id);
 
             if ($section) {
                 // Delete the local image. Modify the url
-                Storage::delete(str_replace(url(Storage::url('')), '', $section->picture));
+                Storage::delete(str_replace(url(Storage::url('')), '', $picture->url));
+
                 $section->delete($request->all());
+                $picture->delete($request->all());
                 return response()->json([
                     'message' => 'Successfully deleted section!'
                 ], Response::HTTP_OK);

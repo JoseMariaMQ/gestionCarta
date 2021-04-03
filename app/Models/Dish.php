@@ -14,7 +14,7 @@ class Dish extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'price', 'units', 'extra', 'hidden', 'menu', 'price_menu', 'ingredients', 'picture', 'section_id'];
+    protected $fillable = ['name', 'price', 'units', 'extra', 'hidden', 'menu', 'price_menu', 'ingredients', 'section_id', 'picture_id'];
 
     /**
      * Get the section that owns the dish
@@ -32,5 +32,14 @@ class Dish extends Model
      */
     public function allergens() {
         return $this->belongsToMany(Allergen::class);
+    }
+
+    /**
+     * Get the picture associated with the dish
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function picture() {
+        return $this->hasOne(Picture::class);
     }
 }

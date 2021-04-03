@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Drink;
+use App\Models\Picture;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -67,12 +68,16 @@ class DrinkController extends Controller
             $url = Storage::url($path);
             $url = url($url);
 
+            $picture = Picture::create([
+                'url' => $url
+            ]);
+
             Drink::create([
                 'name' => $request->name,
                 'price' => $request->price,
                 'hidden' => $request->hidden ? $request->hidden : false, // Check if user enters hidden parameter
-                'picture' => $url,
-                'section_id' => $request->section_id
+                'section_id' => $request->section_id,
+                'picture_id' => $picture->id
             ]);
 
             return response()->json([
@@ -193,11 +198,14 @@ class DrinkController extends Controller
     public function delete(Request $request) {
         try {
             $drink = Drink::find($request->id);
+            $picture = Picture::find($drink->picture_id);
 
             if ($drink) {
                 // Delete the local image. Modify the url
-                Storage::delete(str_replace(url(Storage::url('')), '', $drink->picture));
+                Storage::delete(str_replace(url(Storage::url('')), '', $picture->url));
+
                 $drink->delete($request->all());
+                $picture->delete($request->all());
                 return response()->json([
                     'message' => 'Successfully deleted drink!'
                 ], Response::HTTP_OK);

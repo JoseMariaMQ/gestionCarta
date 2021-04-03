@@ -18,8 +18,8 @@ class CreateDrinksTable extends Migration
             $table->string('name', 255);
             $table->float('price');
             $table->boolean('hidden')->default(false);
-            $table->string('picture', 255)->nullable();
             $table->foreignId('section_id')->constrained()->onDelete('cascade');
+            $table->foreignId('picture_id')->constrained();
 
             $table->timestamps();
         });

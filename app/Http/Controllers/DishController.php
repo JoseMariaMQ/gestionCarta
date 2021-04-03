@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AllergenDish;
 use App\Models\Dish;
+use App\Models\Picture;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -74,6 +75,10 @@ class DishController extends Controller
             $url = Storage::url($path);
             $url = url($url);
 
+            $picture = Picture::create([
+                'url' => $url
+            ]);
+
             $dish = Dish::create([
                 'name' => $request->name,
                 'price' => $request->price,
@@ -83,8 +88,8 @@ class DishController extends Controller
                 'menu' => $request->menu,
                 'price_menu' => $request->price_menu,
                 'ingredients' => $request->ingredients,
-                'picture' => $url,
-                'section_id' => $request->section_id
+                'section_id' => $request->section_id,
+                'picture_id' => $picture->id
             ]);
 
             foreach ($request->allergens_id as $allergen_id) {
@@ -226,11 +231,14 @@ class DishController extends Controller
     public function delete(Request $request) {
         try {
             $dish = Dish::find($request->id);
+            $picture = Picture::find($dish->picture_id);
 
             if ($dish) {
                 // Delete the local image. Modify the url
-                Storage::delete(str_replace(url(Storage::url('')), '', $dish->picture));
+                Storage::delete(str_replace(url(Storage::url('')), '', $picture->url));
+
                 $dish->delete($request->all());
+                $picture->delete($request->all());
                 return response()->json([
                     'message' => 'Successfully deleted dish!'
                 ], Response::HTTP_OK);
