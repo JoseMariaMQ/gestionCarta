@@ -62,3 +62,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::delete('/{id}', [DrinkController::class, 'delete']);
     });
 });
+
+Route::group([
+    'middleware' => ['api', 'cors'],
+    ], function () {
+    Route::get('/', [SectionController::class, 'index']);
+});
+
