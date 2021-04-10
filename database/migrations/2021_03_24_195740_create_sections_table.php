@@ -13,14 +13,15 @@ class CreateSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sections', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 255);
-            $table->integer('order')->nullable();
-            $table->boolean('hidden')->default(false);
-            $table->foreignId('picture_id')->constrained();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('sections')) {
+            Schema::create('sections', function (Blueprint $table) {
+                $table->id();
+                $table->string('name', 255);
+                $table->integer('order')->nullable();
+                $table->boolean('hidden')->default(false);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

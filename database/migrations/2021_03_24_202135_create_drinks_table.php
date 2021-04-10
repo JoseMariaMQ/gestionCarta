@@ -13,16 +13,16 @@ class CreateDrinksTable extends Migration
      */
     public function up()
     {
-        Schema::create('drinks', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 255);
-            $table->float('price');
-            $table->boolean('hidden')->default(false);
-            $table->foreignId('section_id')->constrained()->onDelete('cascade');
-            $table->foreignId('picture_id')->constrained();
-
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('drinks')) {
+            Schema::create('drinks', function (Blueprint $table) {
+                $table->id();
+                $table->string('name', 255);
+                $table->float('price');
+                $table->boolean('hidden')->default(false);
+                $table->foreignId('section_id')->constrained()->onDelete('cascade');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -13,12 +13,14 @@ class CreateAllergenDishesTable extends Migration
      */
     public function up()
     {
-        Schema::create('allergen_dish', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('allergen_id')->constrained()->onDelete('cascade');
-            $table->foreignId('dish_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('allergen_dish')) {
+            Schema::create('allergen_dish', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('allergen_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+                $table->foreignId('dish_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

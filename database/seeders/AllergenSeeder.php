@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Allergen;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class AllergenSeeder extends Seeder
 {
@@ -31,29 +32,28 @@ class AllergenSeeder extends Seeder
             'Altramuces'
         ];
 
-        $pictures = [
-            url('storage/pictures/sections/gluten.svg'),
-            url('storage/pictures/sections/crustaceans.svg'),
-            url('storage/pictures/sections/egg.svg'),
-            url('storage/pictures/sections/fish.svg'),
-            url('storage/pictures/sections/peanuts.svg'),
-            url('storage/pictures/sections/soy.svg'),
-            url('storage/pictures/sections/dairyProducts.svg'),
-            url('storage/pictures/sections/peelFruits.svg'),
-            url('storage/pictures/sections/celery.svg'),
-            url('storage/pictures/sections/mustard.svg'),
-            url('storage/pictures/sections/sesameGrains.svg'),
-            url('storage/pictures/sections/sulfurDioxideSulphites.svg'),
-            url('storage/pictures/sections/mollusks.svg'),
-            url('storage/pictures/sections/lupins.svg')
+        $urls = [
+            url(Storage::disk('public')->url('allergens/pictures/gluten.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/crustaceans.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/egg.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/fish.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/peanuts.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/soy.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/dairyProducts.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/peelFruits.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/celery.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/mustard.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/sesameGrains.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/sulfurDioxideSulphites.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/mollusks.svg')),
+            url(Storage::disk('public')->url('allergens/pictures/lupins.svg'))
         ];
 
-        foreach (array_combine($names, $pictures) as $name => $picture) {
+        foreach (array_combine($names, $urls) as $name => $url) {
             Allergen::create([
                 'name' => $name,
-                'pictures' => $picture
+                'url' => $url
             ]);
         }
-
     }
 }

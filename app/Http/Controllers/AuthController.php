@@ -34,15 +34,18 @@ class AuthController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Successfully create user!'
+                'status' => 'Success',
+                'data' => null
             ], Response::HTTP_CREATED);
         } catch (ValidationException $e) {
             return response()->json([
-               'error' => $e->errors()
+               'status' => 'fail',
+                'data' => $e->errors()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'status' => 'error',
+                'data' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
     }
@@ -66,7 +69,8 @@ class AuthController extends Controller
 
             if (!Auth::attempt($credentials))
                 return response()->json([
-                    'message' => 'Unauthorized'
+                    'status' => 'fail',
+                    'data' => 'Unauthorized'
                 ], Response::HTTP_UNAUTHORIZED);
 
             $user = $request->user();
@@ -84,11 +88,13 @@ class AuthController extends Controller
             ]);
         } catch (ValidationException $e) {
             return response()->json([
-                'error' => $e->errors()
+                'status' => 'fail',
+                'data' => $e->errors()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'status' => 'error',
+                'data' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -100,36 +106,19 @@ class AuthController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function logout(Request $request) {
         try {
             $request->user()->token()->revoke();
 
             return response()->json([
-                'message' => 'Successfully logged out'
+                'status' => 'Success',
+                'data' => null
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'status' => 'error',
+                'data' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
-
-    }
-
-    /**
-     * Show user data
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function user(Request $request) {
-        try {
-            return response()->json($request->user());
-        } catch (Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
     }
 }

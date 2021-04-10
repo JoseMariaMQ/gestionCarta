@@ -14,7 +14,7 @@ class Allergen extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'pictures'];
+    protected $fillable = ['name', 'url'];
 
     /**
      * The dishes that belongs to the allergen
@@ -22,6 +22,6 @@ class Allergen extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function dishes() {
-        return $this->belongsToMany(Dish::class);
+        return $this->belongsToMany(Dish::class, 'allergen_dish', 'allergen_id', 'dish_id');
     }
 }

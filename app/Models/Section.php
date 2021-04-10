@@ -14,7 +14,7 @@ class Section extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['name', 'order', 'hidden', 'picture_id'];
+    protected $fillable = ['name', 'order', 'hidden'];
 
     /**
      * Get the dishes for the section
@@ -39,7 +39,17 @@ class Section extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function picture() {
-        return $this->hasOne(Picture::class);
+    public function sectionPicture() {
+        return $this->hasOne(SectionPicture::class);
+    }
+
+    /**
+     * Get picture as attribute of section
+     *
+     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
+     */
+    public function getPictureAttribute()
+    {
+        return $this->sectionPicture()->first();
     }
 }

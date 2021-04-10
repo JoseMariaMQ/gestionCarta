@@ -25,7 +25,8 @@ class MeController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'status' => 'error',
+                'data' >= $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
     }
@@ -38,30 +39,27 @@ class MeController extends Controller
      */
     public function edit(Request $request) {
         try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string',
-                'email' => 'required|string|email|unique:users,email,' . $request->user()->id
+            $request->validate([
+                'name' => 'filled|string',
+                'email' => 'filled|string|email|unique:users,email,' . $request->user()->id
             ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => $validator->errors()
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
 
             auth()->user()->update($request->all());
 
             return response()->json([
-                'message' => 'Successfully edited user!'
-            ], Response::HTTP_CREATED);
+                'status' => 'Success',
+                'data' => null
+            ], Response::HTTP_OK);
 
         } catch (ValidationException $e) {
             return response()->json([
-                'error' => $e->errors()
+                'status' => 'fail',
+                'data' => $e->errors()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'status' => 'error',
+                'data' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
     }
@@ -74,16 +72,10 @@ class MeController extends Controller
      */
     public function editSecurity(Request $request) {
         try {
-            $validator = Validator::make($request->all(), [
+            $request->validate([
                 'password_old' => 'required|string',
                 'password' => 'required|string|confirmed'
             ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => $validator->errors()
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
 
             //Check which user knows the password
             if (Hash::check($request->password_old, $request->user()->password)) {
@@ -92,22 +84,25 @@ class MeController extends Controller
                 $user->save();
 
                 return response()->json([
-                    'message' => 'Successfully edited user password!'
+                    'status' => 'Success',
+                    'data' => null
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'error' => 'Incorrect password'
+                    'status' => 'fail',
+                    'data' => 'Incorrect password'
                 ], Response::HTTP_UNAUTHORIZED);
             }
         } catch (ValidationException $e) {
             return response()->json([
-                'error' => $e->errors()
+                'status' => 'fail',
+                'data' => $e->errors()
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'status' => 'error',
+                'data' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
     }
-
 }
