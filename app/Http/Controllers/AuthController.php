@@ -14,7 +14,6 @@ class AuthController extends Controller
 {
     /**
      * User register
-     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -52,7 +51,6 @@ class AuthController extends Controller
 
     /**
      * Login and token creation
-     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -102,7 +100,6 @@ class AuthController extends Controller
 
     /**
      * Log out
-     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */

@@ -12,8 +12,8 @@ class DishController extends Controller
 {
     /**
      * List all dishes
-     *
      * @param Request $request
+     * @param $parent_id
      * @return Dish[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request, $parent_id) {
@@ -23,8 +23,8 @@ class DishController extends Controller
 
     /**
      * Store new dish
-     *
      * @param Request $request
+     * @param $parent_id
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request, $parent_id) {
@@ -76,8 +76,9 @@ class DishController extends Controller
 
     /**
      * Get a dish
-     *
      * @param Request $request
+     * @param $parent_id
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $parent_id, $id) {
@@ -87,8 +88,9 @@ class DishController extends Controller
 
     /**
      * Update all dish's fields
-     *
      * @param Request $request
+     * @param $parent_id
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $parent_id, $id) {
@@ -137,8 +139,9 @@ class DishController extends Controller
 
     /**
      * Delete a dish
-     *
      * @param Request $request
+     * @param $parent_id
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request, $parent_id, $id) {

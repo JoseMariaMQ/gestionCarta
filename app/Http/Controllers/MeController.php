@@ -13,7 +13,6 @@ class MeController extends Controller
 {
     /**
      * Show basic data
-     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -33,7 +32,6 @@ class MeController extends Controller
 
     /**
      * Edit basic data
-     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -66,7 +64,6 @@ class MeController extends Controller
 
     /**
      * Edit password
-     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */

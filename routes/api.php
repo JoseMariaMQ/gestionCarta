@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\DishPictureController;
 use App\Http\Controllers\DrinkController;
+use App\Http\Controllers\DrinkPictureController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SectionPictureController;
@@ -69,9 +71,21 @@ Route::group(['middleware' => 'auth:api'], function () {
             Route::get('/{id}', [DrinkController::class, 'show']);
             Route::put('/{id}', [DrinkController::class, 'update']);
             Route::delete('/{id}', [DrinkController::class, 'delete']);
+
+            Route::group(['prefix' => '{drink_id}/drink-picture'], function () {
+                Route::post('/store', [DrinkPictureController::class, 'store']);
+                Route::delete('/{id}', [DrinkPictureController::class, 'delete']);
+            });
         });
     });
 
+    Route::group(['prefix' => '/contact'], function () {
+        Route::get('/', [ContactController::class, 'index']);
+        Route::post('/', [ContactController::class, 'store']);
+        Route::get('/{id}', [ContactController::class, 'show']);
+        Route::put('/{id}', [ContactController::class, 'update']);
+        Route::delete('/{id}', [ContactController::class, 'delete']);
+    });
 });
 
 /*Route::group([

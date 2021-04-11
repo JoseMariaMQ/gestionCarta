@@ -10,7 +10,6 @@ class SectionController extends Controller
 {
     /**
      * List all sections
-     *
      * @param Request $request
      * @return Section[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse
      */
@@ -21,7 +20,6 @@ class SectionController extends Controller
 
     /**
      * Store new section
-     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -52,8 +50,8 @@ class SectionController extends Controller
 
     /**
      * Get a section
-     *
      * @param Request $request
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id) {
@@ -63,8 +61,8 @@ class SectionController extends Controller
 
     /**
      * Update all section's fields
-     *
      * @param Request $request
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id) {
@@ -86,8 +84,8 @@ class SectionController extends Controller
 
     /**
      * Delete a section
-     *
      * @param Request $request
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request, $id) {

@@ -12,8 +12,9 @@ class DishPictureController extends Controller
 {
     /**
      * Store a picture with data validation in the data base and using file storage
-     *
      * @param Request $request
+     * @param $parent_id
+     * @param $dish_id
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request, $parent_id, $dish_id) {
@@ -51,8 +52,10 @@ class DishPictureController extends Controller
 
     /**
      * Delete a picture from the database and the file storage
-     *
      * @param Request $request
+     * @param $parent_id
+     * @param $dish_id
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request, $parent_id, $dish_id, $id) {
@@ -82,7 +85,6 @@ class DishPictureController extends Controller
 
     /**
      * Delete picture from local storage
-     *
      * @param $url
      */
     private function deleteStoragePicture($url) {
@@ -94,7 +96,6 @@ class DishPictureController extends Controller
 
     /**
      * Store picture in local storage
-     *
      * @param $dish_id
      * @param $file
      * @return string
