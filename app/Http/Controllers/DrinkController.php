@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Drink;
 use App\Models\Section;
-use App\Models\SectionPicture;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class DrinkController extends Controller
 {
@@ -32,32 +28,20 @@ class DrinkController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request, $parent_id) {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'price' => 'required|numeric|max:999999.99',
-                'hidden' => 'boolean',
-            ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|max:999999.99',
+            'hidden' => 'boolean',
+        ]);
 
-            /*$file = $request->file('picture');
-            $path = Storage::putFile('pictures/drinks', $file);
-            $url = Storage::url($path);
-            $url = url($url);
+        Drink::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'hidden' => $request->hidden ? $request->hidden : false,
+            'section_id' => $parent_id
+        ]);
 
-            $picture = SectionPicture::create([
-                'url' => $url
-            ]);*/
-
-            Drink::create([
-                'name' => $request->name,
-                'price' => $request->price,
-                'hidden' => $request->hidden ? $request->hidden : false,
-                'section_id' => $parent_id
-            ]);
-
-            return response()->json([
-                'status' => 'Success',
-                'data' => null
-            ], Response::HTTP_CREATED);
+        return $this->successResponse(Response::HTTP_CREATED);
     }
 
     /**
@@ -90,10 +74,7 @@ class DrinkController extends Controller
 
         $drink->update($request->all());
 
-        return response()->json([
-            'status' => 'Success',
-            'data' => null
-        ], Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK);
     }
 
     /**
@@ -109,9 +90,6 @@ class DrinkController extends Controller
 
         $drink->delete();
 
-        return response()->json([
-            'status' => 'Success',
-            'data' => null
-        ], Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK);
     }
 }

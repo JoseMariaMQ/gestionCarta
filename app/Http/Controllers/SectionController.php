@@ -25,27 +25,15 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'order' => 'integer',
-                'hidden' => 'boolean'
-            ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'order' => 'integer',
+            'hidden' => 'boolean'
+        ]);
 
-            /*$file = $request->file('picture');
-            $path = Storage::putFile('pictures/sections', $file);
-            $url = Storage::url($path);
-            $url = url($url);
+        Section::create($request->all());
 
-            $picture = SectionPicture::create([
-                'url' => $url
-            ]);*/
-
-            Section::create($request->all());
-
-            return response()->json([
-                'status' => 'Success',
-                'data' => null
-            ], Response::HTTP_CREATED);
+        return $this->successResponse(Response::HTTP_CREATED);
     }
 
     /**
@@ -55,8 +43,8 @@ class SectionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id) {
-            // Retrieve single records using the findOrFail method
-            return Section::findOrFail($id)->append('picture');
+        // Retrieve single records using the findOrFail method
+        return Section::findOrFail($id)->append('picture');
     }
 
     /**
@@ -66,20 +54,17 @@ class SectionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id) {
-            $section = Section::findOrFail($id);
+        $section = Section::findOrFail($id);
 
-            $request->validate([
-                'name' => 'filled|string|max:255',
-                'order' => 'filled|integer',
-                'hidden' => 'filled|boolean'
-            ]);
+        $request->validate([
+            'name' => 'filled|string|max:255',
+            'order' => 'filled|integer',
+            'hidden' => 'filled|boolean'
+        ]);
 
-            $section->update($request->all());
+        $section->update($request->all());
 
-            return response()->json([
-                'status' => 'Success',
-                'data' => null
-            ], Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK);
     }
 
     /**
@@ -89,13 +74,10 @@ class SectionController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request, $id) {
-            $section = Section::findOrFail($id);
+        $section = Section::findOrFail($id);
 
-            $section->delete();
+        $section->delete();
 
-            return response()->json([
-                'status' => 'Success',
-                'data' => null
-            ], Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK);
     }
 }

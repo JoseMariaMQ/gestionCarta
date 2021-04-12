@@ -44,10 +44,7 @@ class DrinkPictureController extends Controller
             ]);
         }
 
-        return response()->json([
-            'status' => 'Success',
-            'data' => null
-        ], Response::HTTP_CREATED);
+        return $this->successResponse(Response::HTTP_CREATED);
     }
 
     /**
@@ -67,10 +64,7 @@ class DrinkPictureController extends Controller
 
         $picture->delete();
 
-        return response()->json([
-            'status' => 'Success',
-            'data' => null
-        ], Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK);
     }
 
     /**

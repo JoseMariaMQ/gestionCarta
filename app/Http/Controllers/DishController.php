@@ -28,50 +28,38 @@ class DishController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request, $parent_id) {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'price' => 'required|numeric|max:999999.99',
-                'units' => 'filled|integer',
-                'extra' => 'filled|boolean',
-                'hidden' => 'filled|boolean',
-                'menu' => 'filled|boolean',
-                'price_menu' => 'filled|numeric|max:999999.99',
-                'ingredients' => 'filled|string',
-                'allergens_id' => 'filled|exists:App\Models\Allergen,id'
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|max:999999.99',
+            'units' => 'filled|integer',
+            'extra' => 'filled|boolean',
+            'hidden' => 'filled|boolean',
+            'menu' => 'filled|boolean',
+            'price_menu' => 'filled|numeric|max:999999.99',
+            'ingredients' => 'filled|string',
+            'allergens_id' => 'filled|exists:App\Models\Allergen,id'
+        ]);
+
+        $dish = Dish::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'units' => $request->units,
+            'extra' => $request->extra,
+            'hidden' => $request->hidden,
+            'menu' => $request->menu,
+            'price_menu' => $request->price_menu,
+            'ingredients' => $request->ingredients,
+            'section_id' => $parent_id
+        ]);
+
+        foreach ($request->allergens_id as $allergen_id) {
+            AllergenDish::create([
+                'allergen_id' => $allergen_id,
+                'dish_id' => $dish->id
             ]);
+        }
 
-            /*$file = $request->file('picture');
-            $path = Storage::putFile('pictures/dishes'. $request->id, $file);
-            $url = Storage::url($path);
-            $url = url($url);
-
-            $picture = SectionPicture::create([
-                'url' => $url
-            ]);*/
-
-            $dish = Dish::create([
-                'name' => $request->name,
-                'price' => $request->price,
-                'units' => $request->units,
-                'extra' => $request->extra,
-                'hidden' => $request->hidden,
-                'menu' => $request->menu,
-                'price_menu' => $request->price_menu,
-                'ingredients' => $request->ingredients,
-                'section_id' => $parent_id
-            ]);
-
-            foreach ($request->allergens_id as $allergen_id) {
-                AllergenDish::create([
-                    'allergen_id' => $allergen_id,
-                    'dish_id' => $dish->id
-                ]);
-            }
-
-            return response()->json([
-                'status' => 'Success',
-                'data' => null
-            ], Response::HTTP_CREATED);
+        return $this->successResponse(Response::HTTP_CREATED);
     }
 
     /**
@@ -82,8 +70,8 @@ class DishController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $parent_id, $id) {
-            $section = Section::findOrFail($parent_id);
-            return $section->dishes()->with('allergens')->findOrFail($id)->append('picture');
+        $section = Section::findOrFail($parent_id);
+        return $section->dishes()->with('allergens')->findOrFail($id)->append('picture');
     }
 
     /**
@@ -94,47 +82,44 @@ class DishController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $parent_id, $id) {
-            $section = Section::findOrFail($parent_id);
-            $dish = $section->dishes()->findOrFail($id);
+        $section = Section::findOrFail($parent_id);
+        $dish = $section->dishes()->findOrFail($id);
 
-            $request->validate([
-                'name' => 'string|max:255',
-                'price' => 'numeric|max:999999.99',
-                'units' => 'integer',
-                'extra' => 'boolean',
-                'hidden' => 'boolean',
-                'menu' => 'boolean',
-                'price_menu' => 'numeric|max:999999.99',
-                'ingredients' => 'string',
-                'allergens_id' => 'exists:App\Models\Allergen,id'
-            ]);
+        $request->validate([
+            'name' => 'string|max:255',
+            'price' => 'numeric|max:999999.99',
+            'units' => 'integer',
+            'extra' => 'boolean',
+            'hidden' => 'boolean',
+            'menu' => 'boolean',
+            'price_menu' => 'numeric|max:999999.99',
+            'ingredients' => 'string',
+            'allergens_id' => 'exists:App\Models\Allergen,id'
+        ]);
 
-            $dish->update($request->all());
+        $dish->update($request->all());
 
-            if ($request->allergens_id) {
-                $allergens = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-                foreach ($request->allergens_id as $allergen_id) {
-                    $allergenDish = AllergenDish::where('allergen_id', $allergen_id)->where('dish_id', $id)->first();
-                    $allergens = array_diff($allergens, array($allergen_id));
-                    if (!$allergenDish) {
-                        AllergenDish::create([
-                            'allergen_id' => $allergen_id,
-                            'dish_id' => $dish->id
-                        ]);
-                    }
-                }
-                foreach ($allergens as $allergen) {
-                    $allergenDish = AllergenDish::where('allergen_id', $allergen)->where('dish_id', $id)->first();
-                    if ($allergenDish) {
-                        $allergenDish->delete();
-                    }
+        if ($request->allergens_id) {
+            $allergens = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+            foreach ($request->allergens_id as $allergen_id) {
+                $allergenDish = AllergenDish::where('allergen_id', $allergen_id)->where('dish_id', $id)->first();
+                $allergens = array_diff($allergens, array($allergen_id));
+                if (!$allergenDish) {
+                    AllergenDish::create([
+                        'allergen_id' => $allergen_id,
+                        'dish_id' => $dish->id
+                    ]);
                 }
             }
+            foreach ($allergens as $allergen) {
+                $allergenDish = AllergenDish::where('allergen_id', $allergen)->where('dish_id', $id)->first();
+                if ($allergenDish) {
+                    $allergenDish->delete();
+                }
+            }
+        }
 
-            return response()->json([
-                'status' => 'Success',
-                'data' => null
-            ], Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK);
     }
 
     /**
@@ -147,10 +132,7 @@ class DishController extends Controller
     public function delete(Request $request, $parent_id, $id) {
         $section = Section::findOrFail($parent_id);
         $dish = $section->dishes()->findOrFail($id);
-            $dish->delete();
-            return response()->json([
-                'status' => 'Success',
-                'data' => null
-            ], Response::HTTP_OK);
+        $dish->delete();
+        return $this->successResponse(Response::HTTP_OK);
     }
 }
