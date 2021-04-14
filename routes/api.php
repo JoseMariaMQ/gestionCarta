@@ -24,67 +24,67 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('register', [AuthController::class, 'signUp']);
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'signUp'])->name('register');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['prefix' => 'auth'], function () {
-        Route::get('logout', [AuthController::class, 'logout']);
+        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 //        Route::post('register', [AuthController::class, 'signUp']);
     });
 
     Route::group(['prefix' => 'me'], function () {
-        Route::get('/', [MeController::class, 'show']);
-        Route::put('/', [MeController::class, 'edit']);
-        Route::put('/security', [MeController::class, 'editSecurity']);
+        Route::get('/', [MeController::class, 'show'])->name('me');
+        Route::put('/', [MeController::class, 'edit'])->name('me.edit');
+        Route::put('/security', [MeController::class, 'editSecurity'])->name('me.editsecurity');
     });
 
     Route::group(['prefix' => 'section'], function () {
-        Route::get('/', [SectionController::class, 'index']);
-        Route::post('/', [SectionController::class, 'store']);
-        Route::get('/{id}', [SectionController::class, 'show']);
-        Route::put('/{id}', [SectionController::class, 'update']);
-        Route::delete('/{id}', [SectionController::class, 'delete']);
+        Route::get('/', [SectionController::class, 'index'])->name('section');
+        Route::post('/', [SectionController::class, 'store'])->name('section.store');
+        Route::get('/{id}', [SectionController::class, 'show'])->name('section.show');
+        Route::put('/{id}', [SectionController::class, 'update'])->name('section.update');
+        Route::delete('/{id}', [SectionController::class, 'delete'])->name('section.delete');
 
         Route::group(['prefix' => '{parent_id}/section-picture'], function () {
-           Route::post('/store', [SectionPictureController::class, 'store']);
-           Route::delete('/{id}', [SectionPictureController::class, 'delete']);
+           Route::post('/store', [SectionPictureController::class, 'store'])->name('section-picture.store');
+           Route::delete('/{id}', [SectionPictureController::class, 'delete'])->name('section-picture.delete');
         });
 
         Route::group(['prefix' => '{parent_id}/dishes'], function () {
-            Route::get('/', [DishController::class, 'index']);
-            Route::post('/', [DishController::class, 'store']);
-            Route::get('/{id}', [DishController::class, 'show']);
-            Route::put('/{id}', [DishController::class, 'update']);
-            Route::delete('/{id}', [DishController::class, 'delete']);
+            Route::get('/', [DishController::class, 'index'])->name('dishes');
+            Route::post('/', [DishController::class, 'store'])->name('dishes.store');
+            Route::get('/{id}', [DishController::class, 'show'])->name('dishes.show');
+            Route::put('/{id}', [DishController::class, 'update'])->name('dishes.update');
+            Route::delete('/{id}', [DishController::class, 'delete'])->name('dishes.delete');
 
             Route::group(['prefix' => '{dish_id}/dish-picture'], function () {
-                Route::post('/store', [DishPictureController::class, 'store']);
-                Route::delete('/{id}', [DishPictureController::class, 'delete']);
+                Route::post('/store', [DishPictureController::class, 'store'])->name('dish-picture.store');
+                Route::delete('/{id}', [DishPictureController::class, 'delete'])->name('dish-picture.delete');
             });
         });
 
         Route::group(['prefix' => '{parent_id}/drinks'], function () {
-            Route::get('/', [DrinkController::class, 'index']);
-            Route::post('/', [DrinkController::class, 'store']);
-            Route::get('/{id}', [DrinkController::class, 'show']);
-            Route::put('/{id}', [DrinkController::class, 'update']);
-            Route::delete('/{id}', [DrinkController::class, 'delete']);
+            Route::get('/', [DrinkController::class, 'index'])->name('drinks');
+            Route::post('/', [DrinkController::class, 'store'])->name('drinks.store');
+            Route::get('/{id}', [DrinkController::class, 'show'])->name('drinks.show');
+            Route::put('/{id}', [DrinkController::class, 'update'])->name('drinks.update');
+            Route::delete('/{id}', [DrinkController::class, 'delete'])->name('drinks.delete');
 
             Route::group(['prefix' => '{drink_id}/drink-picture'], function () {
-                Route::post('/store', [DrinkPictureController::class, 'store']);
-                Route::delete('/{id}', [DrinkPictureController::class, 'delete']);
+                Route::post('/store', [DrinkPictureController::class, 'store'])->name('drink-picture.store');
+                Route::delete('/{id}', [DrinkPictureController::class, 'delete'])->name('drink-picture.delete');
             });
         });
     });
 
     Route::group(['prefix' => '/contact'], function () {
-        Route::get('/', [ContactController::class, 'index']);
-        Route::post('/', [ContactController::class, 'store']);
-        Route::get('/{id}', [ContactController::class, 'show']);
-        Route::put('/{id}', [ContactController::class, 'update']);
-        Route::delete('/{id}', [ContactController::class, 'delete']);
+        Route::get('/', [ContactController::class, 'index'])->name('contact');
+        Route::post('/', [ContactController::class, 'store'])->name('contact.store');
+        Route::get('/{id}', [ContactController::class, 'show'])->name('contact.show');
+        Route::put('/{id}', [ContactController::class, 'update'])->name('contact.update');
+        Route::delete('/{id}', [ContactController::class, 'delete'])->name('contact.delete');
     });
 });
 
