@@ -26,6 +26,15 @@ class Section extends Model
     }
 
     /**
+     * Get the desserts for the section
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function desserts() {
+        return $this->hasMany(Dessert::class);
+    }
+
+    /**
      * Get the drinks for the section
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

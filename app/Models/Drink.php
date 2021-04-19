@@ -35,11 +35,20 @@ class Drink extends Model
     }
 
     /**
-     * Get picture as attribute of section
+     * Get picture as attribute of drink
      *
      * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
      */
     public function getPictureAttribute() {
         return $this->drinkPicture()->first();
+    }
+
+    /**
+     * Get section as attribute of drink
+     *
+     * @return Section[]|\Illuminate\Database\Eloquent\Collection|Model|null
+     */
+    public function getSectionAttribute() {
+        return Section::all()->find($this->section_id);
     }
 }

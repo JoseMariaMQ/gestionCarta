@@ -52,11 +52,13 @@ class DishController extends Controller
             'section_id' => $parent_id
         ]);
 
-        foreach ($request->allergens_id as $allergen_id) {
-            AllergenDish::create([
-                'allergen_id' => $allergen_id,
-                'dish_id' => $dish->id
-            ]);
+        if ($request->allergens_id) {
+            foreach ($request->allergens_id as $allergen_id) {
+                AllergenDish::create([
+                    'allergen_id' => $allergen_id,
+                    'dish_id' => $dish->id
+                ]);
+            }
         }
 
         return $this->successResponse(Response::HTTP_CREATED);
