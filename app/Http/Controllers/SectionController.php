@@ -14,8 +14,8 @@ class SectionController extends Controller
      * @return Section[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request) {
-            // The model's all method will retrieve all of the records from the model's associated database table
-            return Section::all()->append('picture');
+        // The model's all method will retrieve all of the records from the model's associated database table
+        return Section::all()->append('picture');
     }
 
     /**

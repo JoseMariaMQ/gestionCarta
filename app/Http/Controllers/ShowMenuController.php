@@ -10,16 +10,7 @@ use Illuminate\Http\Request;
 
 class ShowMenuController extends Controller
 {
-
-    public function listDishes(Request $request) {
-        return Dish::with('allergens')->get()->append('section')->append('picture');
-    }
-
-    public function listDesserts(Request $request) {
-        return Dessert::with('allergens')->get()->append('section')->append('picture');
-    }
-
-    public function listDrinks(Request $request) {
-        return Drink::all()->append('section')->append('picture');
+    public function listSections(Request $request) {
+        return Section::all()->append('picture')->append('dishes')->append('desserts')->append('drinks');
     }
 }
