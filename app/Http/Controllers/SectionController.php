@@ -15,7 +15,7 @@ class SectionController extends Controller
      */
     public function index(Request $request) {
         // The model's all method will retrieve all of the records from the model's associated database table
-        return Section::all()->append('picture');
+        return Section::orderBy('order', 'ASC')->get()->append('picture');
     }
 
     /**

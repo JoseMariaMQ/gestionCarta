@@ -11,6 +11,6 @@ use Illuminate\Http\Request;
 class ShowMenuController extends Controller
 {
     public function listSections(Request $request) {
-        return Section::all()->append('picture')->append('dishes')->append('desserts')->append('drinks');
+        return Section::orderBy('order', 'ASC')->get()->append('picture')->append('dishes')->append('desserts')->append('drinks');
     }
 }
