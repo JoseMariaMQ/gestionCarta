@@ -31,9 +31,9 @@ class SectionController extends Controller
             'hidden' => 'boolean'
         ]);
 
-        Section::create($request->all());
+        $section = Section::create($request->all());
 
-        return $this->successResponse(Response::HTTP_CREATED);
+        return $this->successResponse(Response::HTTP_CREATED, $section);
     }
 
     /**

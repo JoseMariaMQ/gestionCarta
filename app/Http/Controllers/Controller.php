@@ -16,10 +16,10 @@ class Controller extends BaseController
      * Show success response
      * @return \Illuminate\Http\JsonResponse
      */
-    public function successResponse($code) {
+    public function successResponse($code, $data = null) {
         return response()->json([
             'status' => 'Success',
-            'data' => null
+            'data' => $data
         ], $code);
     }
 
