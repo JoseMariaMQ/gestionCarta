@@ -16,7 +16,7 @@ class CreateDessertPicturesTable extends Migration
         if (!Schema::hasTable('dessert_pictures')) {
             Schema::create('dessert_pictures', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('dessert_id')->unique()->constrained();
+                $table->foreignId('dessert_id')->unique()->constrained()->onDelete('cascade');
                 $table->string('url', 255);
                 $table->timestamps();
             });

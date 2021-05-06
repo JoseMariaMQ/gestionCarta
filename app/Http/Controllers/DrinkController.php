@@ -34,14 +34,14 @@ class DrinkController extends Controller
             'hidden' => 'boolean',
         ]);
 
-        Drink::create([
+        $drink = Drink::create([
             'name' => $request->name,
             'price' => $request->price,
             'hidden' => $request->hidden ? $request->hidden : false,
             'section_id' => $parent_id
         ]);
 
-        return $this->successResponse(Response::HTTP_CREATED);
+        return $this->successResponse(Response::HTTP_CREATED, $drink);
     }
 
     /**

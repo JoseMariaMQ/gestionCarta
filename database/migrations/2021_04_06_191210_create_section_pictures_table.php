@@ -16,7 +16,7 @@ class CreateSectionPicturesTable extends Migration
         if (!Schema::hasTable('section_pictures')) {
             Schema::create('section_pictures', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('section_id')->unique()->constrained();
+                $table->foreignId('section_id')->unique()->constrained()->onDelete('cascade');
                 $table->string('url', 255);
                 $table->timestamps();
             });

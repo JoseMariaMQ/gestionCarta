@@ -61,7 +61,7 @@ class DishController extends Controller
             }
         }
 
-        return $this->successResponse(Response::HTTP_CREATED);
+        return $this->successResponse(Response::HTTP_CREATED, $dish);
     }
 
     /**

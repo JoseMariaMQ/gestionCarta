@@ -64,7 +64,7 @@ class SectionController extends Controller
 
         $section->update($request->all());
 
-        return $this->successResponse(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK, $section);
     }
 
     /**

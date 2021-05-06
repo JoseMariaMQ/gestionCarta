@@ -16,7 +16,7 @@ class CreateDrinkPicturesTable extends Migration
         if (!Schema::hasTable('drink_pictures')) {
             Schema::create('drink_pictures', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('drink_id')->unique()->constrained();
+                $table->foreignId('drink_id')->unique()->constrained()->onDelete('cascade');
                 $table->string('url', 255);
                 $table->timestamps();
             });
