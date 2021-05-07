@@ -121,7 +121,7 @@ class DessertController extends Controller
             }
         }
 
-        return $this->successResponse(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK, $dessert);
     }
 
     /**

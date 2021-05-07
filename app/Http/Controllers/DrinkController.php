@@ -74,7 +74,7 @@ class DrinkController extends Controller
 
         $drink->update($request->all());
 
-        return $this->successResponse(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK, $drink);
     }
 
     /**
