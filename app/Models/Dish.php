@@ -16,6 +16,8 @@ class Dish extends Model
      */
     protected $fillable = ['name', 'price', 'units', 'extra', 'hidden', 'menu', 'price_menu', 'ingredients', 'section_id'];
 
+    protected $with = ['picture', 'allergens'];
+
     /**
      * Get the section that owns the dish
      *
@@ -39,25 +41,7 @@ class Dish extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function dishPicture() {
+    public function picture() {
         return $this->hasOne(DishPicture::class);
-    }
-
-    /**
-     * Get picture as attribute of dish
-     *
-     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
-     */
-    public function getPictureAttribute() {
-        return $this->dishPicture()->first();
-    }
-
-    /**
-     * Get section as attribute of dish
-     *
-     * @return Section[]|\Illuminate\Database\Eloquent\Collection|Model|null
-     */
-    public function getSectionAttribute() {
-        return Section::all()->find($this->section_id);
     }
 }

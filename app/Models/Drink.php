@@ -16,6 +16,8 @@ class Drink extends Model
      */
     protected $fillable = ['name', 'price', 'hidden', 'section_id'];
 
+    protected $with = ['picture'];
+
     /**
      * Get the section that owns the drink
      *
@@ -30,25 +32,7 @@ class Drink extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function drinkPicture() {
+    public function picture() {
         return $this->hasOne(drinkPicture::class);
-    }
-
-    /**
-     * Get picture as attribute of drink
-     *
-     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
-     */
-    public function getPictureAttribute() {
-        return $this->drinkPicture()->first();
-    }
-
-    /**
-     * Get section as attribute of drink
-     *
-     * @return Section[]|\Illuminate\Database\Eloquent\Collection|Model|null
-     */
-    public function getSectionAttribute() {
-        return Section::all()->find($this->section_id);
     }
 }

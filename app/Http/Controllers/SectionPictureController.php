@@ -25,7 +25,7 @@ class SectionPictureController extends Controller
             'media' => 'required|image|mimes:jpg,jpeg,png|max:3072'
         ]);
 
-        if ($picture = $section->sectionPicture) {
+        if ($picture = $section->picture) {
             $this->deleteStoragePicture($picture->url);
             $file = $request->file('media');
             $url = url($this->storeStoragePicture($parent_id, $file));
@@ -55,7 +55,7 @@ class SectionPictureController extends Controller
      */
     public function delete(Request $request, $parent_id, $id) {
         $section = Section::findOrFail($parent_id);
-        $picture = $section->sectionPicture()->findOrFail($id);
+        $picture = $section->picture()->findOrFail($id);
 
         $this->deleteStoragePicture($picture->url);
 

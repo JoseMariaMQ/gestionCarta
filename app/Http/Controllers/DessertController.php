@@ -18,7 +18,7 @@ class DessertController extends Controller
      */
     public function index(Request $request, $parent_id) {
         $section = Section::findOrFail($parent_id);
-        return $section->desserts()->with('allergens')->get()->append('picture');
+        return $section->desserts;
     }
 
     /**
@@ -73,7 +73,7 @@ class DessertController extends Controller
      */
     public function show(Request $request, $parent_id, $id) {
         $section = Section::findOrFail($parent_id);
-        return $section->desserts()->with('allergens')->findOrFail($id)->append('picture');
+        return $section->desserts()->findOrFail($id);
     }
 
     /**

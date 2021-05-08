@@ -15,7 +15,7 @@ class SectionController extends Controller
      */
     public function index(Request $request) {
         // The model's all method will retrieve all of the records from the model's associated database table
-        return Section::orderBy('order', 'ASC')->get()->append('picture');
+        return Section::orderBy('order', 'ASC')->get();
     }
 
     /**
@@ -44,7 +44,7 @@ class SectionController extends Controller
      */
     public function show(Request $request, $id) {
         // Retrieve single records using the findOrFail method
-        return Section::findOrFail($id)->append('picture');
+        return Section::findOrFail($id);
     }
 
     /**
@@ -78,6 +78,6 @@ class SectionController extends Controller
 
         $section->delete();
 
-        return $this->successResponse(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK, $section);
     }
 }

@@ -18,7 +18,7 @@ class DishController extends Controller
      */
     public function index(Request $request, $parent_id) {
         $section = Section::findOrFail($parent_id);
-        return $section->dishes()->with('allergens')->get()->append('picture');
+        return $section->dishes;
     }
 
     /**
@@ -73,7 +73,7 @@ class DishController extends Controller
      */
     public function show(Request $request, $parent_id, $id) {
         $section = Section::findOrFail($parent_id);
-        return $section->dishes()->with('allergens')->findOrFail($id)->append('picture');
+        return $section->dishes()->findOrFail($id);
     }
 
     /**

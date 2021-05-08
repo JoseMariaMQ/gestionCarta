@@ -26,7 +26,7 @@ class DrinkPictureController extends Controller
             'media' => 'required|image|mimes:jpg,jpeg,png|max:3072'
         ]);
 
-        if ($picture = $drink->drinkPicture) {
+        if ($picture = $drink->picture) {
             $this->deleteStoragePicture($picture->url);
             $file = $request->file('media');
             $url = url($this->storeStoragePicture($drink_id, $file));
@@ -58,7 +58,7 @@ class DrinkPictureController extends Controller
     public function delete(Request $request, $parent_id, $drink_id, $id) {
         $section = Section::findOrFail($parent_id);
         $drink = $section->drinks()->findOrFail($drink_id);
-        $picture = $drink->drinkPicture()->findOrFail($id);
+        $picture = $drink->picture()->findOrFail($id);
 
         $this->deleteStoragePicture($picture->url);
 

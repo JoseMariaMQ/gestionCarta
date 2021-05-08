@@ -17,6 +17,13 @@ class Section extends Model
     protected $fillable = ['name', 'order', 'hidden'];
 
     /**
+     * Get dishes, desserts, drinks and picture of section
+     *
+     * @var string[]
+     */
+    protected $with = ['dishes', 'desserts', 'drinks', 'picture'];
+
+    /**
      * Get the dishes for the section
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -48,44 +55,7 @@ class Section extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function sectionPicture() {
+    public function picture() {
         return $this->hasOne(SectionPicture::class);
-    }
-
-    /**
-     * Get picture as attribute of section
-     *
-     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
-     */
-    public function getPictureAttribute()
-    {
-        return $this->sectionPicture()->first();
-    }
-
-    /**
-     * Get dishes as attribute of section
-     *
-     * @return mixed
-     */
-    public function getDishesAttribute() {
-        return Dish::where('section_id', $this->id)->with('allergens')->get()->append('picture');
-    }
-
-    /**
-     * Get desserts as attribute of section
-     *
-     * @return mixed
-     */
-    public function getDessertsAttribute() {
-        return Dessert::where('section_id', $this->id)->with('allergens')->get()->append('picture');
-    }
-
-    /**
-     * Get drinks as attribute of section
-     *
-     * @return mixed
-     */
-    public function getDrinksAttribute() {
-        return Drink::where('section_id', $this->id)->get()->append('picture');
     }
 }

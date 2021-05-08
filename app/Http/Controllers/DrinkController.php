@@ -18,7 +18,7 @@ class DrinkController extends Controller
      */
     public function index(Request $request, $parent_id) {
         $section = Section::findOrFail($parent_id);
-        return $section->drinks->append('picture');
+        return $section->drinks;
     }
 
     /**
@@ -53,7 +53,7 @@ class DrinkController extends Controller
      */
     public function show(Request $request, $parent_id, $id) {
         $section = Section::findOrFail($parent_id);
-        return $section->drinks()->findOrFail($id)->append('picture');
+        return $section->drinks()->findOrFail($id);
     }
 
     /**

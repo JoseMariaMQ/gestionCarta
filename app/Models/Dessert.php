@@ -16,6 +16,8 @@ class Dessert extends Model
      */
     protected $fillable = ['name', 'price', 'units', 'extra', 'hidden', 'menu', 'price_menu', 'ingredients', 'section_id'];
 
+    protected $with = ['picture', 'allergens'];
+
     /**
      * Get the section that owns the dessert
      *
@@ -39,25 +41,7 @@ class Dessert extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function dessertPicture() {
+    public function picture() {
         return $this->hasOne(DessertPicture::class);
-    }
-
-    /**
-     * Get picture as attribute of dessert
-     *
-     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
-     */
-    public function getPictureAttribute() {
-        return $this->dessertPicture()->first();
-    }
-
-    /**
-     * Get section as attribute of dessert
-     *
-     * @return Section[]|\Illuminate\Database\Eloquent\Collection|Model|null
-     */
-    public function getSectionAttribute() {
-        return Section::all()->find($this->section_id);
     }
 }

@@ -26,7 +26,7 @@ class DessertPictureController extends Controller
             'media' => 'required|image|mimes:jpg,jpeg,png|max:3072'
         ]);
 
-        if ($picture = $dessert->dessertPicture) {
+        if ($picture = $dessert->picture) {
             $this->deleteStoragePicture($picture->url);
             $file = $request->file('media');
             $url = url($this->storeStoragePicture($dessert_id, $file));
@@ -58,7 +58,7 @@ class DessertPictureController extends Controller
     public function delete(Request $request, $parent_id, $dessert_id, $id) {
         $section = Section::findOrFail($parent_id);
         $dessert = $section->desserts()->findOrFail($dessert_id);
-        $picture = $dessert->dessertPicture()->findOrFail($id);
+        $picture = $dessert->picture()->findOrFail($id);
 
         $this->deleteStoragePicture($picture->url);
 
