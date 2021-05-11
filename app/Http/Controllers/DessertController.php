@@ -135,6 +135,6 @@ class DessertController extends Controller
         $section = Section::findOrFail($parent_id);
         $dessert = $section->desserts()->findOrFail($id);
         $dessert->delete();
-        return $this->successResponse(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK, $dessert);
     }
 }

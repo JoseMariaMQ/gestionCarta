@@ -90,6 +90,6 @@ class DrinkController extends Controller
 
         $drink->delete();
 
-        return $this->successResponse(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK, $drink);
     }
 }

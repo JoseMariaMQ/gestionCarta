@@ -135,6 +135,6 @@ class DishController extends Controller
         $section = Section::findOrFail($parent_id);
         $dish = $section->dishes()->findOrFail($id);
         $dish->delete();
-        return $this->successResponse(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_OK, $dish);
     }
 }
