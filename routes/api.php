@@ -28,14 +28,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['cors']], function () {
     Route::group(['prefix' => 'auth'], function () {
-        Route::post('register', [AuthController::class, 'signUp'])->name('register');
+//        Route::post('register', [AuthController::class, 'signUp'])->name('register');
         Route::post('login', [AuthController::class, 'login'])->name('login');
     });
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::group(['prefix' => 'auth'], function () {
             Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-//        Route::post('register', [AuthController::class, 'signUp']);
+            Route::post('register', [AuthController::class, 'signUp'])->name('register');
         });
 
         Route::group(['prefix' => 'me'], function () {
