@@ -1212,7 +1212,7 @@
                 "league/oauth2-server": "^8.2",
                 "nyholm/psr7": "^1.3",
                 "php": "^7.3|^8.0",
-                "phpseclib/phpseclib": "^3.0.7",
+                "phpseclib/phpseclib": "^3.0.9",
                 "symfony/psr-http-message-bridge": "^2.0"
             },
             "require-dev": {
